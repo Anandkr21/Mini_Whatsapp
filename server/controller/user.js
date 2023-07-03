@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const { userModel } = require('../model/userModel')
+const { msgModel } = require('../model/msgModel')
 
 require('dotenv').config();
 
@@ -42,19 +43,19 @@ exports.login = async (req, res) => {
             return res.status(400).send({ "err": "No user found with this email" })
         }
 
-        bcrypt.compare(password, user.password, async(err,result) => {
+        bcrypt.compare(password, user.password, async (err, result) => {
             if (result) {
                 const token = jwt.sign({ id: user._id }, process.env.Secret_key, { expiresIn: '1h' });
-                res.status(200).send({ 
+                res.status(200).send({
                     status: true,
-                    msg: "You have been logged in successfully", 
-                    token: token ,
+                    msg: "You have been logged in successfully",
+                    token: token,
                     data: user
                 })
             }
             else {
-                res.status(400).send({ 
-                    status:false,
+                res.status(400).send({
+                    status: false,
                     msg: "Wrong password",
                 })
             }
@@ -62,9 +63,35 @@ exports.login = async (req, res) => {
     }
     catch (err) {
         res.status(500).send({
-            status:false,
+            status: false,
             msg: "Internal server error!"
         });
         console.log("message:", err);
     }
+}
+
+
+exports.message = async (req, res) => {
+    try {
+        var msg = new Msg({
+            sender_id: req.body.sender_id,
+            receiver_id: req.body.receiver_id,
+            message:req.body.message,
+        });
+
+        await msg.save();
+        res.status(200).send({
+            status:true,
+            msg: "Chat stored"
+        })
+    } catch (error) {
+        res.status(400).send({
+            status: false,
+            msg: error.message
+        })
+    }
+}
+
+exports.alluser = (req,res) =>{
+    res.send('ok')
 }
