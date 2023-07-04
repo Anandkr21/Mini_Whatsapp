@@ -7,8 +7,10 @@ const messSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
+},{
+    versionKey : false
 });
 
-const MessModel = mongoose.model('Newmsg', messSchema);
+const MessModel = mongoose.model('messages', messSchema);
 
 module.exports = { MessModel };

@@ -19,6 +19,8 @@ const schema = mongoose.Schema({
         type: Date,
         default: Date.now
     }
+},{
+    versionKey : false
 })
 
 const userModel = new mongoose.model('user', schema)
