@@ -13,11 +13,14 @@ const schema = mongoose.Schema({
     password: {
         type: String,
         unique: true,
-        minlength: [5],
-        select: false
+        minlength: [5]
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 })
 
 const userModel = new mongoose.model('user', schema)
 
-module.exports = {userModel}
+module.exports = { userModel }

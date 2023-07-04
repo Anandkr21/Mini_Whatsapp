@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const { userModel } = require('../model/userModel')
-const { msgModel } = require('../model/msgModel')
+const { MessModel } = require('../model/msg')
 
 require('dotenv').config();
 
@@ -72,26 +72,13 @@ exports.login = async (req, res) => {
 
 
 exports.message = async (req, res) => {
+    let nae = req.params.name;
     try {
-        var msg = new Msg({
-            sender_id: req.body.sender_id,
-            receiver_id: req.body.receiver_id,
-            message:req.body.message,
-        });
-
-        await msg.save();
-        res.status(200).send({
-            status:true,
-            msg: "Chat stored"
-        })
-    } catch (error) {
-        res.status(400).send({
-            status: false,
-            msg: error.message
-        })
+        let user = await MessModel.find({ "name": nae })
+        let allmsg = user[0].msg;
+        res.send(allmsg);
     }
-}
-
-exports.alluser = (req,res) =>{
-    res.send('ok')
+    catch (err) {
+        res.send(err);
+    }
 }
