@@ -1,9 +1,7 @@
 const socket = io("http://localhost:8080/", { transports: ["websocket"] });
 
 const form = document.getElementById("chatbox");
-
 const messageInput = document.getElementById("messageInp");
-
 const messageContainer = document.querySelector(".container");
 
 const append = (message, position) => {
@@ -34,13 +32,11 @@ socket.on("user-joined", (name) => {
 });
 
 
-
 socket.on('list', (userlist) => {
     append(`${userlist} : joined the chat`, "right");
     const alluser = document.getElementById('listofuser')
     alluser.innerHTML = userlist;
 })
-
 
 
 socket.on("receive", (data) => {
